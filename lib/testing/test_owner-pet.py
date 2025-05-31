@@ -1,3 +1,4 @@
+import pytest
 from lib.owner import Owner
 from lib.pet import Pet
 

@@ -7,12 +7,11 @@ class Pet:
             raise Exception("Name must be a non-empty string")
         if pet_type not in self.PET_TYPES:
             raise Exception(f"pet_type must be one of {self.PET_TYPES}")
-        # Defer owner validation to setter to avoid circular import
+        if owner is not None and type(owner).__name__ != "Owner":
+            raise Exception("Owner must be an instance of Owner")
         self._name = name
         self._pet_type = pet_type
-        self._owner = None  # Set owner later
-        if owner is not None:
-            self.owner = owner  # Use setter for validation
+        self._owner = owner
         Pet.all.append(self)
 
     @property
@@ -29,7 +28,6 @@ class Pet:
 
     @owner.setter
     def owner(self, value):
-        from owner import Owner  # Moved import inside setter
-        if value is not None and not isinstance(value, Owner):
+        if value is not None and type(value).__name__ != "Owner":
             raise Exception("Owner must be an instance of Owner")
         self._owner = value
