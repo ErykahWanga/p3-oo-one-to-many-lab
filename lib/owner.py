@@ -1,24 +1,25 @@
+
+
 class Owner:
     def __init__(self, name):
-        if not isinstance(name, str) or not name:
-            raise Exception("Name must be a non-empty string")
-        self._name = name
-
-    @property
-    def name(self):
-        return self._name
-
-    def pets(self):
-        """Return a list of all pets belonging to this owner."""
-        from pet import Pet  # Keep for now, but we'll test without it
-        return [pet for pet in Pet.all if pet.owner == self]
+        self.name = name
+        self._pets = []
 
     def add_pet(self, pet):
-        """Add a pet to this owner after validating it is a Pet instance."""
-        if type(pet).__name__ != "Pet":
-            raise Exception("Pet must be an instance of Pet")
-        pet.owner = self
+        from lib.pet import Pet  # Delayed import to prevent circular import
+        if isinstance(pet, Pet):
+            if pet not in self._pets:
+                self._pets.append(pet)
+            if pet.owner != self:
+                pet._owner = self  # avoid recursive loop by directly setting
+        else:
+            raise TypeError("pet must be an instance of Pet")
+
+    def pets(self):
+        return self._pets
 
     def get_sorted_pets(self):
-        """Return a sorted list of this owner's pets by their names."""
-        return sorted(self.pets(), key=lambda pet: pet.name)
+        return sorted(self._pets, key=lambda pet: pet.name)
+
+    def __repr__(self):
+        return f"<Owner name={self.name}>"
