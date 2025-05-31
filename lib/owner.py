@@ -1,9 +1,14 @@
 
+# lib/owner.py
 
 class Owner:
     def __init__(self, name):
+        if not name:
+            raise Exception("Owner name cannot be empty")
         self.name = name
         self._pets = []
+    ...
+
 
     def add_pet(self, pet):
         from lib.pet import Pet  # Delayed import to prevent circular import

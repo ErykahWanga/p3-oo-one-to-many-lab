@@ -1,15 +1,19 @@
 
 
+# lib/pet.py
+
 class Pet:
     all = []
 
-    def __init__(self, name, species, owner=None):
+    def __init__(self, name, pet_type, owner=None):  # rename parameter
         self.name = name
-        self.species = species
+        self.pet_type = pet_type  # store as pet_type to match test
         self._owner = None
         if owner:
-            self.owner = owner  # uses setter
+            self.owner = owner
         Pet.all.append(self)
+    ...
+
 
     @property
     def owner(self):
