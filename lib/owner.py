@@ -10,13 +10,12 @@ class Owner:
 
     def pets(self):
         """Return a list of all pets belonging to this owner."""
-        from pet import Pet
+        from pet import Pet  # Keep for now, but we'll test without it
         return [pet for pet in Pet.all if pet.owner == self]
 
     def add_pet(self, pet):
         """Add a pet to this owner after validating it is a Pet instance."""
-        from pet import Pet
-        if not isinstance(pet, Pet):
+        if type(pet).__name__ != "Pet":
             raise Exception("Pet must be an instance of Pet")
         pet.owner = self
 
